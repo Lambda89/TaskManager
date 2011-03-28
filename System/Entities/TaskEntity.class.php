@@ -4,6 +4,7 @@
 		Created: 2011-03-05
 		Purpose: Represent a task in the system.
 		Comment:
+			This is to represent a task within the system as a part of a story.
 
 		Uses:
 			n/a - n/a
