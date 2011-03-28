@@ -1,0 +1,17 @@
+<?php
+	/**
+		Authour: Werner Johansson
+		Created: 2010--
+		Purpose:
+		Comment:
+
+		Uses:
+			n/a - n/a
+	**/
+
+	class ClassNotFoundException extends Exception {
+		public __construct() {
+		}
+	}
+
+?>
