@@ -6,7 +6,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-	<title><?php Utilities::outputHtmlTitle(); ?></title>
+	<title><?php FormatOutputUtility::outputHtmlTitle(); ?></title>
 	
 </head>
 

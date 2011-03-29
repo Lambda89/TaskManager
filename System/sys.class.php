@@ -39,10 +39,13 @@
 		$toLoad = "";
 
 		if( stristr( $class, "exception" ) == "exception" ) {
-			$toLoad = $BASE_DIR ."System/Exceptions/". $class ."class.php";
+			$toLoad = $BASE_DIR ."System/Exceptions/". $class .".class.php";
 		}
 		else if( stristr( $class, "entity" ) == "entity" ) {
-			$toLoad = $BASE_DIR ."System/Entities/". $class ."class.php";
+			$toLoad = $BASE_DIR ."System/Entities/". $class .".class.php";
+		}
+		else if( stristr( $class, "utility") == "utility") {
+			$toLoad = $BASE_DIR ."System/Utilities/". $class .".class.php";
 		}
 		else {
 			try {
