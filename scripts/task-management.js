@@ -10,8 +10,6 @@ Comment:
 	
 Uses:
 	jQuery Javascript Library - /jquery/jquery.js
-	jQuery User Interface Library - /jquery/jquery-ui.js
-
 **/
 
 $(document).ready(function(){
@@ -20,9 +18,9 @@ $(document).ready(function(){
 	Event-handling
 	**/
 	
-	$('#element').click(function() { loadTasks(); } );
-	$('#save_element').click(function() { saveTasks(); } );
-	$('#remove_element').click(function() { removeTask(); } );
+	$('#element').live('click', function() { loadTasks(); } );
+	$('#save_element').live('click', function() { saveTask(); } );
+	$('#remove_element').live('click', function() { removeTask(); } );
 	
 	/**
 	Functions
