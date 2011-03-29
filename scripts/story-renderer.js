@@ -20,7 +20,17 @@ $(document).ready(function(){
 	**/
 
 	function renderStories() {
-		
+		$('#story-list').sortable({
+			stop: function(event, ui) { arrangeStories(); }
+		});
+	}
+	
+	function arrangeStories() {
+		var itms = $('.story-listed');
+
+		$.each(itms, function(i, p){
+			$(p).attr('id', i);
+		});
 	}
 	
 });
