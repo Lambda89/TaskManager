@@ -15,14 +15,24 @@ Uses:
 **/
 
 $(document).ready(function(){
-	class TaskManagement {
 	
-		public TaskManagement() {
-			this.loadTasks();
-		}
+	//On-click-events
+	
+	$('#element').click(function() { loadTasks(); } );
+	$('#save_element').click(function() { saveTasks(); } );
+	$('#remove_element').click(function() { removeTask(); } );
+	
+	// Functions
+	
+	function loadTasks() {
 		
-		private function loadTasks() {
-			
-		}
+	}
+	
+	function saveTask() {
+		
+	}
+	
+	function removeTask() {
+		
 	}
 });
