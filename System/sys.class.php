@@ -16,7 +16,7 @@
 			exceptions.class.php - pulls in the custom exceptions defined there.
 	**/
 
-	require_once( 'config.php' );
+	require_once( 'application_config.php' );
 	require_once( $BASE_EXP ."error_handler.php" );
 
 	/**
