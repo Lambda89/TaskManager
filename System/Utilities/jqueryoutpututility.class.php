@@ -2,7 +2,7 @@
 
 /**
 	Authour: Rickard Lund
-	Created: 2011-03-29
+	Created: 2011-03-30
 	Purpose: Generate output associated with the jQuery-libraries
 	Comment: 
 		
