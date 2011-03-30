@@ -17,10 +17,8 @@ class FormatOutputUtility
 	**/
 	
 	public static function outputHtmlTitle() {
-		$host = $_SERVER['HTTP_HOST'];
-		$page = ucwords(str_replace("/", " | ", str_replace(".php", "", $_SERVER['PHP_SELF'])));
-		$title = $host.$page;
-		echo $title;
+		$title = str_replace( "/", " | ", str_replace( ".php", "", $title ) );
+		echo ucwords($formatted_title);
 	}
 }
 
