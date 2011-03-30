@@ -15,12 +15,24 @@ Uses:
 
 $(document).ready(function(){
 	
+	var prefix = "t";
+	
 	/**
 	Functions
 	**/
 
-	function renderTasks() {
+	function setTasksSortable(prefix) {
+		$('#tasks').sortable({
+			stop: function(event, ui, prefix) { arrangeTasks(prefix); }
+		});
+	}
+	
+	function arrangeTasks(prefix) {
+		var items = $('.task-listed');
 		
+		$.each(items, function(i, item){
+			$(item).attr('id', prefix+i);
+		})
 	}
 	
 });

@@ -14,22 +14,36 @@ Uses:
 **/
 
 $(document).ready(function(){
+
+	var prefix = "s";
 	
 	/**
 	Functions
 	**/
+	
+	/**
+	setStoriesSortable();
+	Set stories-list to be sortable by jQuery UI.
+	Set stop-event to trigger story arrangment.
+	**/
 
-	function renderStories() {
+	function setStoriesSortable(prefix) {
 		$('#story-list').sortable({
-			stop: function(event, ui) { arrangeStories(); }
+			stop: function(event, ui, prefix) { arrangeStories(prefix); }
 		});
 	}
 	
-	function arrangeStories() {
-		var itms = $('.story-listed');
+	/**
+	arrangeStories();
+	Finds all stories in a specified list.
+	Reorders their IDs based on position in DOM-tree
+	**/
+	
+	function arrangeStories(prefix) {
+		var items = $('.story-listed');
 
-		$.each(itms, function(i, p){
-			$(p).attr('id', i);
+		$.each(items, function(i, item){
+			$(item).attr('id', prefix+i);
 		});
 	}
 	
