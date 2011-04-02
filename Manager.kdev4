@@ -1,4 +1,4 @@
 [Project]
-Name=Manager
 Manager=KDevGenericManager
+Name=TaskManager
 VersionControl=

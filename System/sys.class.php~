@@ -16,7 +16,7 @@
 			exceptions.class.php - pulls in the custom exceptions defined there.
 	**/
 
-	require_once( 'config.php' );
+	require_once( 'application_config.php' );
 	require_once( $BASE_EXP ."error_handler.php" );
 
 	/**
@@ -36,13 +36,17 @@
 	**/
 	function __autoload( $class ) {
 		$class = strtolower( $class );
-		$toLoad = "";
+		$toLoad = null;
 
 		if( stristr( $class, "exception" ) == "exception" ) {
-			$toLoad = $BASE_DIR ."System/Exceptions/". $class ."class.php";
+			$toLoad = $BASE_DIR ."System/Exceptions/". $class .".class.php";
 		}
 		else if( stristr( $class, "entity" ) == "entity" ) {
-			$toLoad = $BASE_DIR ."System/Entities/". $class ."class.php";
+			$toLoad = $BASE_DIR ."System/Entities/". $class .".class.php";
+		}
+		/** Not optimal, Utilities should be located under Business for general access */
+		else if( stristr( $class, "utility") == "utility") {
+			$toLoad = $BASE_DIR ."System/Utilities/". $class .".class.php";
 		}
 		else {
 			try {
@@ -55,16 +59,21 @@
 					case "view" :
 						$toLoad = $BASE_DIR ."Views/". $class .".class.php";
 						break;
-					default :
-						$toLoad = $BASE_DIR ."System/". $class .".class.php";
+					default:
+						$toLoad = $BASE_DIR ."Business/CommonClasses/". $class .".class.php";
 						break;
 				}
 			} catch( Exception $e ) {
-				$mess = "Did not find the class file requested, '". $class ."'. Please check naming and paths before retrying.";
-				throw new FileNotFoundException( $mess, 1, $e, $toLoad );
+				// Failed to explode the file into smaller pieces, letting it go the try below.
 			}
 		}
-		require_once( $toLoad );
+
+		try {
+			require_once( $toLoad );
+		} catch( Exception $e ) {
+			$mess = "Did not find the class file requested, '". $class ."'. Please check naming and paths before retrying.";
+			throw new FileNotFoundException( $mess, 1, $e, $toLoad );
+		}
 	}
 
 	/**
@@ -162,7 +171,7 @@
 			access to the data associated with the session.
 			Basically anything that shouldn't be loaded from session but kept under
 			a tighter leach should be run from here so we don't make mistakes in
-			references. Besides, this is easier than doing and isset() everytime we
+			references. Besides, this is easier than doing and isset() every time we
 			need something.
 		**/
 		private function prepSession() {

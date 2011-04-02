@@ -36,7 +36,7 @@
 	**/
 	function __autoload( $class ) {
 		$class = strtolower( $class );
-		$toLoad = "";
+		$toLoad = null;
 
 		if( stristr( $class, "exception" ) == "exception" ) {
 			$toLoad = $BASE_DIR ."System/Exceptions/". $class .".class.php";
@@ -44,6 +44,7 @@
 		else if( stristr( $class, "entity" ) == "entity" ) {
 			$toLoad = $BASE_DIR ."System/Entities/". $class .".class.php";
 		}
+		/** Not optimal, Utilities should be located under Business for general access */
 		else if( stristr( $class, "utility") == "utility") {
 			$toLoad = $BASE_DIR ."System/Utilities/". $class .".class.php";
 		}
@@ -58,16 +59,22 @@
 					case "view" :
 						$toLoad = $BASE_DIR ."Views/". $class .".class.php";
 						break;
-					default :
-						$toLoad = $BASE_DIR ."System/". $class .".class.php";
+					default:
+						$toLoad = $BASE_DIR ."Business/CommonClasses/". $class .".class.php";
 						break;
 				}
 			} catch( Exception $e ) {
-				$mess = "Did not find the class file requested, '". $class ."'. Please check naming and paths before retrying.";
-				throw new FileNotFoundException( $mess, 1, $e, $toLoad );
+				// Failed to explode the file into smaller pieces, letting it go the try below.
 			}
 		}
-		require_once( $toLoad );
+
+		// Actual file loading happens here.
+		try {
+			require_once( $toLoad );
+		} catch( Exception $e ) {
+			$mess = "Did not find the class file requested, '". $class ."'. Please check naming and paths before retrying.";
+			throw new FileNotFoundException( $mess, 1, $e, $toLoad );
+		}
 	}
 
 	/**
