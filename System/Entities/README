@@ -1,0 +1,3 @@
+This directory contains the entity files needed to talk to each table within the system.
+While these will be a great deal of them most of them will be used by other classes whom
+collect them into a more useful to the system.
