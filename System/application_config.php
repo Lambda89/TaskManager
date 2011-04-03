@@ -26,7 +26,7 @@ $BASE_DIR = "/Users/rickardlund/Sites/TaskManager/";
 $BASE_EXP = $BASE_DIR ."System/Exceptions/";
 $BASE_ENT = $BASE_DIR ."System/Entities/";
 
-// DATABASE
+// DATABASE - Use Local
 $DB_TYPE = "MYSQLI";
 $DB_SERVER = "localhost";
 $DB_USER = "root";

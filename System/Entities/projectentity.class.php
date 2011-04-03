@@ -17,7 +17,7 @@
 
 		private $members 				= null;		// users
 
-		function __construct( $id=-1) { 
+		function __construct( User $user, $id=-1) {
 			if( $id != -1 ) { // numcheck?
 				// retrieve from DB
 			}

@@ -31,7 +31,7 @@
 			Public constructor. Provide a creatorID as creation. Not pulled on it's
 			own since it should be unaware of the system it self.
 		**/
-		public function __construct( $creatorID, $title=null, $description=null ) {
+		public function __construct( User $user, $title=null, $description=null ) {
 			
 		}
 	}
