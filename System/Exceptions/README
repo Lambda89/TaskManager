@@ -1,1 +1,19 @@
 This directory contains all the various Exceptions this app will use.
+
+Exception and ErrorException are defined in the error_handler.php which is used by the sys.class.php in the
+autoloading.
+All exceptions use this as a base for their basic behavior. Remember that an exception can be quite complex
+if needed.
+The codes will detail from which part of the system they were first thrown.
+
+Codes :
+
+	1000 - low level system
+
+	2000 - Entity exceptions
+
+	3000 - CompoundClass Exceptions
+
+	4000 - View Exceptions
+
+	5000 - Utilities Exception

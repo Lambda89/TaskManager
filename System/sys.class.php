@@ -28,9 +28,14 @@
 		folder in the file structure.
 
 		In order for this to work classes are supposed to named
-		'<name>_<type>.class.php'.
-		If the <type> is omitted it will go to a standard library for classes and
-		try there. Failing all else it will default to a FileNotFoundException.
+		'<name>_<type>.class.php' or <name><type>.class.php. It will look into
+		the ones name <name><type> first and see if anything matches, short of that
+		it will try for files named with the _ in it and try to select a file from
+		those kind directories. Needless to say this is to extend the filesystem
+		to encompass more classes.
+		If the <type> is omitted it will go to a standard library, /Business/CommonClasses
+		for classes and try there. Failing all else it will default to a
+		FileNotFoundException for the developer to deal with.
 
 		@throws FileNotFoundException
 	**/
@@ -43,6 +48,9 @@
 		}
 		else if( stristr( $class, "entity" ) == "entity" ) {
 			$toLoad = $BASE_DIR ."System/Entities/". $class .".class.php";
+		}
+		else if( $class, "interface" == "interface" ) {
+			$toLoad = $BASE_DIR ."System/Interfaces/". $class .".class.php";
 		}
 		/** Not optimal, Utilities should be located under Business for general access */
 		else if( stristr( $class, "utility") == "utility") {

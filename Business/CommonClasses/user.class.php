@@ -17,15 +17,40 @@
 
 	class User {
 
+		/* == Variables == */
+		
 		private UserEnity $user = null;
+		private $contactData = null;
 
-	 /**
-		* Basic Constructor, requires
+		/* == Standard methods == */
+		
+		/**
+			Basic Constructor, requires
 		**/
 		public function __construct( UserEntity $userEntity=null ) {
 			$this->user = $userEntity;
 		}
 
+		/* == Get/Set internal variables == */
+
+		public function setUserEntity( UserEntity $user ) { $this->user = $user; }
+		public function getUserEntity() { return $this->user; }
+
+		public function getContactData() { return $this->contactData; }
+		public function setContactData( array $data ) {
+			// will need validation
+		}
+		public function addContactData( ContactDataEntity $conData ) {
+			
+		}
+		
+
+		/* == Utility methods == */
+		
+		/**
+			Returns the email of the user, the email will be pulled from the UserEntity if there is
+			one present inside. Else it's null.
+		**/
 		public function getEmail() {
 			$email = null;
 			if( $user != null ) {

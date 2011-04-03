@@ -13,12 +13,14 @@
 
 	**/
 
-	class UserEntity {
+	class UserEntity implements EntityInterface {
 
+		/* == Variables == */
 		private $email = null; // unique and primary key in the database for that reason.
 		private $login = null; // if we want it to be different from the email, probably will want that, screen name?
 		private $passwd = null; // Should be hashed. md5 is a good choice probably.
 
+		/* == Basic functions == */
 		/**
 			Basic constructor, will however do a login if provided to a login and password.
 		**/
@@ -28,18 +30,36 @@
 			}
 		}
 
-		/**
-			Returns the email of this user.
-		**/
-		public function getEmail() {
-			return $this->email;
-		}
 
+		/* == Get/Set == */
+		
+		/**
+			Returns/Sets the email of this user.
+		**/
+		public function getEmail() { return $this->email; }
+		public function setEmail( $email ) { $this->email = $email; }
+
+		/**
+			Returns/Sets the login/screen name
+		**/
+		public function getLogin() { return $this->login(); }
+		public function setLogin( $userName ) { $this->login = $userName; }
+
+		public function setPassword( $password ) { $this->passwd = $this->hashPassword( $password ); }
+
+
+
+		/* == Utility == */
+		
 		/**
 			This 
 		**/
 		public function login( $login, $password ) {
 
+		}
+
+		public function hashPassword( $password ) {
+			if( $password == null ) { throw new  }
 		}
 	}
 
