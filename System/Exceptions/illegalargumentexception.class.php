@@ -24,6 +24,4 @@
 			return $this->argument;
 		}
 	}
-	
-
 ?>

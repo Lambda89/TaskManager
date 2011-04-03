@@ -8,12 +8,15 @@ The codes will detail from which part of the system they were first thrown.
 
 Codes :
 
-	1000 - low level system
+	1*** - low level system
+	1000 - sys.class.php exceptions, specific to this particular file
 
-	2000 - Entity exceptions
+	2*** - Entity exceptions
 
-	3000 - CompoundClass Exceptions
+	3*** - CompoundClass Exceptions
 
-	4000 - View Exceptions
+	4*** - View Exceptions
 
-	5000 - Utilities Exception
+	5*** - Utilities Exception
+
+( *** means any number in this case, the code is always between 1000 and 9999 )

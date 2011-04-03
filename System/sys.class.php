@@ -81,7 +81,7 @@
 			require_once( $toLoad );
 		} catch( Exception $e ) {
 			$mess = "Did not find the class file requested, '". $class ."'. Please check naming and paths before retrying.";
-			throw new FileNotFoundException( $mess, 1, $e, $toLoad );
+			throw new FileNotFoundException( $mess, 1000, $e, $toLoad );
 		}
 	}
 
