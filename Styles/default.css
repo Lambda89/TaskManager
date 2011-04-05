@@ -18,11 +18,10 @@ li {
 
 #wrapper {
 	margin: auto;
-	width: 960px;
+	width: 100%;
 }
 
 #header {
-	width: 960px;
 	height: 30px;
 	border-top: 10px solid #D66;
 	background-color: #DDD;
@@ -47,8 +46,28 @@ li {
 }
 
 #footer {
-	width: 960px;
 	height: 30px;
 	border-top: 10px solid #D66;
 	background-color: #000;
+}
+
+/**
+	Stories
+**/
+
+#story-list {
+	margin-left: 20px;
+}
+
+.story-listed {
+	width: 50%;
+	height: 30px;
+	background-color: #FFA;
+	border: 2px solid #FFF;
+	margin-top: 10px;
+	padding: 5px;
+}
+
+.story-listed:hover {
+	border: 2px solid #000;
 }

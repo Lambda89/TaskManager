@@ -49,7 +49,7 @@
 		else if( stristr( $class, "entity" ) == "entity" ) {
 			$toLoad = $BASE_DIR ."System/Entities/". $class .".class.php";
 		}
-		else if( $class, "interface" == "interface" ) {
+		else if( stristr($class, "interface") == "interface" ) {
 			$toLoad = $BASE_DIR ."System/Interfaces/". $class .".class.php";
 		}
 		/** Not optimal, Utilities should be located under Business for general access */
