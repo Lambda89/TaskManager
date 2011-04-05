@@ -1,0 +1,37 @@
+This directory contains all the various Exceptions this app will use.
+
+Exception and ErrorException are defined in the error_handler.php which is used by the sys.class.php in the
+autoloading.
+All exceptions use this as a base for their basic behavior. Remember that an exception can be quite complex
+if needed.
+The codes will detail from which part of the system they were first thrown.
+
+Codes :
+
+	1*** - low level system
+	1000 - sys.class.php exceptions, specific to this particular file
+	
+	1100 - Failed in some way with the Database
+	1101 - Wrong server 
+	1102 - Wrong port
+	1103 - Wrong username
+	1104 - Wrong password
+	1110 - Failed operation in some way.
+
+	1200 - File error of some sort
+	1201 - Failed to locate a file.
+
+	2*** - Entity exceptions
+	2100 - Basic failure
+	2200 - Failed to Insert data
+	2300 - Failed to Update data
+	2300 - Failed to Delete data
+	2400 - Failed to Select data
+
+	3*** - CompoundClass Exceptions
+
+	4*** - View Exceptions
+
+	5*** - Utilities Exception
+
+( *** means any number in this case, the code is always between 1000 and 9999 )
