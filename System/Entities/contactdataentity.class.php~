@@ -26,7 +26,7 @@
 
 		public function setComment( $comment ) {
 			if( $comment == null ) {
-				throw new IllegalArgumentException( "No comment", 2001 );
+				throw new IllegalArgumentException( "No comment", 1001 );
 			}
 			$this->comment = $comment;
 		}

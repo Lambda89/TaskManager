@@ -33,8 +33,9 @@
 		it will try for files named with the _ in it and try to select a file from
 		those kind directories. Needless to say this is to extend the filesystem
 		to encompass more classes.
-		If the <type> is omitted it will go to a standard library for classes and
-		try there. Failing all else it will default to a FileNotFoundException.
+		If the <type> is omitted it will go to a standard library, /Business/CommonClasses
+		for classes and try there. Failing all else it will default to a
+		FileNotFoundException for the developer to deal with.
 
 		@throws FileNotFoundException
 	**/
