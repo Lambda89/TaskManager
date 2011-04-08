@@ -25,8 +25,8 @@ Codes :
 	2100 - Basic failure
 	2200 - Failed to Insert data
 	2300 - Failed to Update data
-	2300 - Failed to Delete data
-	2400 - Failed to Select data
+	2400 - Failed to Delete data
+	2500 - Failed to Select data
 
 	3*** - CompoundClass Exceptions
 

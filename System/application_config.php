@@ -12,6 +12,9 @@
 			kind of database and driver it uses if necessary.
 
 			Basic assumption of PHP5.3+ is being used.
+
+			SHOULD BE UNDER GIT IGNORE!!!
+			
 		@Package System
 		Uses:
 			n/a - n/a
@@ -21,16 +24,11 @@
 date_default_timezone_set( "Europe/Stockholm" ); // Brutal override of the php.ini file.
 
 // FILE STRUCTURE
-$BASE_DIR = "/Users/rickardlund/Sites/TaskManager/";
+$BASE_DIR = "/srv/www/htdocs/TaskManager/";
 
 $BASE_EXP = $BASE_DIR ."System/Exceptions/";
 $BASE_ENT = $BASE_DIR ."System/Entities/";
-
-// DATABASE - Use Local
-$DB_TYPE = "MYSQLI";
-$DB_SERVER = "localhost";
-$DB_USER = "root";
-$DB_PASSWD = "gabba4";
-
+$BASE_COMMONS = $BASE_DIR ."Business/CommonClasses/";
+$BASE_LOGIC = $BASE_DIR ."Business/Logic/";
 
 ?>

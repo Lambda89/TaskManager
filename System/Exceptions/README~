@@ -16,7 +16,7 @@ Codes :
 	1102 - Wrong port
 	1103 - Wrong username
 	1104 - Wrong password
-	1110 - Failed operation in some way.
+	1110 - Failed SQL request in some way.
 
 	1200 - File error of some sort
 	1201 - Failed to locate a file.
