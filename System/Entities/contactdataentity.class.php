@@ -18,27 +18,47 @@
 		
 		private $comment = null;
 		
-		public function __construct( $protocol, $userName, $comment=null ) {
-			$this->protocol = $protocol;
-			$this->userName = $protocolUserName;
-			$this->comment = $comment;
+		public function __construct( $id=-1 ) {
+			if( $id != -1 ) {
+				retrieve( $id );
+			}
 		}
 
 		public function setComment( $comment ) {
 			if( $comment == null ) {
 				throw new IllegalArgumentException( "No comment", 2001 );
 			}
-			$this->comment = $comment;
+			$this->comment = DB::clean( $comment );
 		}
 
-		public function persist($action="INSUPD") {
-			if( $action == "DEL" ) {
-				if( $id != -1 ) {
-					$sqlDEL = "DELETE * FROM `user_contact_data` WHERE `id` = $id AND `protocol_user_name` = '$protocolUserName' LIMIT 1;";
-					DB->delete( $sqlDEL );
+		
+
+		/**
+			Returns true if the action was successful
+		**/
+		public function persist( $op=null ) {
+			if( $op != null ) {
+				if( $op == "DEL" ) {
+					if( $id != -1 ) {
+						$sqlDEL = "DELETE * FROM `user_contact_data` WHERE `id` = $this->id AND `protocol_user_name` = '$this->userName' LIMIT 1;";
+						return DB::delete( $sqlDEL );
+					}
+				} else {
+					// special cases.
 				}
 			} else {
-				
+				if( $this->id != -1 ) {
+					$sqlINS = "INSERT INTO `user_contact_data` (`id`,`protocol`,`userName`,`comment`) VALUES ( null, '$this->protocol','$this->userName','$this->comment')";
+					$this->id = DB::insert( $sqlINS );
+					if( $this->id != 0 && $this->id != -1 ) {
+						return true;
+					} else {
+						return false;
+					}
+				} else {
+					$sqlUPD = "UPDATE `user_contact_data` SET `protocol`='$this->protocol', `userName`='$this->userName', `comment` = '$this->comment' WHERE `id`=$this->id";
+					return DB::update( $sqlUPD );
+				}
 			}
 		}
 	}
