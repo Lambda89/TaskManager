@@ -22,6 +22,9 @@
 				// retrieve from DB
 			}
 		}
+
+		public function persist( $op=null ) {
+		}
 		
 	} // End of Class
 

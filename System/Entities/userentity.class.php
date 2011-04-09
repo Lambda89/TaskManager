@@ -61,6 +61,9 @@
 		public function hashPassword( $password ) {
 			if( $password == null ) { throw new  }
 		}
+
+		public function persist( $op=null ) {
+		}
 	}
 
 ?>

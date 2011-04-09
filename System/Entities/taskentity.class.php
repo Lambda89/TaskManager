@@ -11,7 +11,7 @@
 		@package Entities
 	**/
 
-	class TaskEntity {
+	class TaskEntity implements EntityInterface {
 		$id = -1;
 		$projectID = -1;
 		$interalOrder = 1;
@@ -33,6 +33,9 @@
 		**/
 		public function __construct( User $user, $title=null, $description=null ) {
 			
+		}
+
+		public function persist( $op=null ) {
 		}
 	}
 ?>

@@ -11,7 +11,7 @@
 			  
 	**/
 
-	class Story {
+	class Story implements EntityInterface {
 		
 		private $id = -1;
 		private $title = null;
@@ -23,6 +23,9 @@
 		public function __constructor( User $user ) {
 			$creator = $user->getEmail();
 			$creDate = getDate();
+		}
+
+		public function persist( $op=null ) {
 		}
 	}
 ?>
