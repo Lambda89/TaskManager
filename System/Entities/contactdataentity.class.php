@@ -18,6 +18,7 @@
 
 	class ContactDataEntity implements EntityInterface {
 		private $id = -1;						// database id.
+		private $userID = null;
 		private $protocol = null;		// i.e msn, email, etc
 		private $userName = null;		// the screenName/userName they use to be identified.
 		
@@ -26,7 +27,8 @@
 		/**
 			Returns a new object. If an id is passed in and works as a 
 		**/
-		public function __construct( $id=-1 ) {
+		public function __construct( User $user, $id=-1 ) {
+			$this->userID = $user->getID();
 			if( $id != -1 ) {
 				retrieve( $id );
 			}
