@@ -4,10 +4,15 @@
 		Created: 2011-04-03
 		Purpose: Contain a set of information on how to contact this user.
 		Comment:
+			This is an entity set to describe one line of communication of data to
+			the one user. The User class is supposed to be controlling agent of this
+			data. It shouldn't be accessed from anywhere else except for testing.
+			No form of validation of the indata is done. A mere cleaning of it is
+			done as a matter of course. 
 
 		@package Entities
 		uses:
-			n/a - n/a
+			[Commons] db.class.php - Allows for the connection to the database.
 
 	**/
 
@@ -17,24 +22,63 @@
 		private $userName = null;		// the screenName/userName they use to be identified.
 		
 		private $comment = null;
-		
+
+		/**
+			Returns a new object. If an id is passed in and works as a 
+		**/
 		public function __construct( $id=-1 ) {
 			if( $id != -1 ) {
 				retrieve( $id );
 			}
 		}
 
-		public function setComment( $comment ) {
-			if( $comment == null ) {
-				throw new IllegalArgumentException( "No comment", 2001 );
-			}
-			$this->comment = DB::clean( $comment );
-		}
+		/* == GET/SET == */
 
+		public function getId() { return $this->id; }
+		public function getProtcol() { return $this->protocol; }
+		public function getUserName() { return $this->userName; }
+		public function getComment() { return $this->comment; }
 		
+		public function setProtocol( $indata ) { $this->protocol = DB::clean( $indata ); }
+		public function setUserName( $indata ) { $this->userName = DB::clean( $indata ); }
+		public function setComment( $indata ) { $this->comment = DB::clean( $indata ); }
+
+
+		/* == INTERFACE == */
 
 		/**
-			Returns true if the action was successful
+			Forces this entity to retrieve the database.
+			This will return true if a successful retrieval was done, else false.
+			@throws IllegalArgumentException
+		**/
+		public function retrieve( $id ) {
+			if( is_integer( $id ) ) {
+				$sqlSEL = "SELECT * FROM `user_contact_data` WHERE `id`='$id';";
+				try {
+					$reply = DB::retrieve( $sqlSEL );
+					if( $reply != null ) {
+						foreach( $reply as $key => $value ) {
+							if( $key == "protocol" ) { $this->protocol = $value; }
+							if( $key == "userName" ) { $this->userName = $value; }
+							if( $key == "comment"  ) { $this->comment = $value;  }
+						}
+						$this->id = $id;
+						return true;
+					} else {
+						return false;
+					}
+				} catch( DatabaseException $de ) {
+					throw new IllegalArgumentException( "The entity was not present in the database.", 2502, $de, $id );
+				}
+			} else {
+				throw new IllegalArgumentException( "The argument passed into this retrieve was not an integer.", 2501, $id );
+			}
+		}
+
+		/**
+			Will save, update or delete this object in the database.
+			Returns true if the action was successful, else false.
+			@throws DatabaseException
 		**/
 		public function persist( $op=null ) {
 			if( $op != null ) {
