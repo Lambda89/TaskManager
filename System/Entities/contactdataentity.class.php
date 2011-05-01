@@ -101,8 +101,9 @@
 				}
 			} else {
 				if( $this->id != -1 ) {
-					$sqlINS = "INSERT INTO `user_contact_data` (`id`,`protocol`,`userName`,`comment`) VALUES ( null, '$this->protocol','$this->userName','$this->comment')";
+					$sqlINS = "INSERT INTO `user_contact_data` (`id`,`userID`,`protocol`,`userName`,`comment`) VALUES ( null, '$this->userID','$this->protocol','$this->userName','$this->comment')";
 					$this->id = DB::insert( $sqlINS );
+
 					if( $this->id != 0 && $this->id != -1 ) {
 						return true;
 					} else {
