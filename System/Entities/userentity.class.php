@@ -19,7 +19,7 @@
 		private $email = null;    // unique and primary key in the database for that reason.
 		private $login = null;    // if we want it to be different from the email, probably will want that, screen name?
 		private $passwd = null;   // Should be hashed. md5 is a good choice probably.
-		private $created = null;  // 
+		private $created = null;  // When this entity was created.
 
 		/* == Basic functions == */
 		/**
@@ -60,7 +60,7 @@
 		}
 
 		public function hashPassword( $password ) {
-			if( $password == null ) { throw new  }
+			if( $password == null || $password == "" ) { throw new IllegalArgumentException( "No password provided.", 4400, null ); }
 		}
 
 		public function persist( $op=null ) {
