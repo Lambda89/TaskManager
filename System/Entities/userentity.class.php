@@ -16,9 +16,10 @@
 	class UserEntity implements EntityInterface {
 
 		/* == Variables == */
-		private $email = null; // unique and primary key in the database for that reason.
-		private $login = null; // if we want it to be different from the email, probably will want that, screen name?
-		private $passwd = null; // Should be hashed. md5 is a good choice probably.
+		private $email = null;    // unique and primary key in the database for that reason.
+		private $login = null;    // if we want it to be different from the email, probably will want that, screen name?
+		private $passwd = null;   // Should be hashed. md5 is a good choice probably.
+		private $created = null;  // 
 
 		/* == Basic functions == */
 		/**

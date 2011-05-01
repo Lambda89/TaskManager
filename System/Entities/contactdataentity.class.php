@@ -18,19 +18,24 @@
 
 	class ContactDataEntity implements EntityInterface {
 		private $id = -1;						// database id.
-		private $userID = null;
+		private $user = null;
 		private $protocol = null;		// i.e msn, email, etc
 		private $userName = null;		// the screenName/userName they use to be identified.
 		
 		private $comment = null;
 
+
 		/**
 			Returns a new object. If an id is passed in and works as a 
 		**/
 		public function __construct( User $user, $id=-1 ) {
-			$this->userID = $user->getID();
-			if( $id != -1 ) {
-				retrieve( $id );
+			$this->user = $user;
+			try {
+				if( $id != -1 ) {
+					retrieve( $id );
+				}
+			} catch( Exception $e ) {
+				// This probably will want to fail silently, not sure if it should here though.
 			}
 		}
 
@@ -40,7 +45,8 @@
 		public function getProtcol() { return $this->protocol; }
 		public function getUserName() { return $this->userName; }
 		public function getComment() { return $this->comment; }
-		
+
+		public function setId( $indata ) { $this->id = DB::clean( $indata ); }
 		public function setProtocol( $indata ) { $this->protocol = DB::clean( $indata ); }
 		public function setUserName( $indata ) { $this->userName = DB::clean( $indata ); }
 		public function setComment( $indata ) { $this->comment = DB::clean( $indata ); }
@@ -76,6 +82,7 @@
 				throw new IllegalArgumentException( "The argument passed into this retrieve was not an integer.", 2501, $id );
 			}
 		}
+
 
 		/**
 			Will save, update or delete this object in the database.
