@@ -3,7 +3,7 @@
 /**
 * 
 */
-class Header
+class Head
 {
 	public $head;
 	
