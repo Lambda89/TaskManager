@@ -83,7 +83,7 @@
 		 * This shouldn't be used directly without good cause. The result will not
 		 * processed but instead raw data will be returned.
 		 */
-		public function query( $sql ) {
+		public static function query( $sql ) {
 			try {
 				$result = DB::getInstance()->query( DB::clean( $sql ) );
 				return $result;
@@ -92,13 +92,26 @@
 			}
 		}
 
+		public static function processQueryResult( $result ) {
+			$returnArray = array();
+			$counter = 0;
+			while( $row = $result->fetch_assoc() ) {
+				$counter++;
+				$line = array();
+				foreach( $row as $key => $value ) {
+					$lineKey = "row".$counter;
+					$line[ $lineKey ][ $key ] =  $value;
+				}
+			}
+			return $returnArray;
+		}
 
 		/**
 		 * Will run an insert SQL and then return the ID that was created. It will
 		 * assume that the primary key is name 'id' if nothing else is provided.
 		 * @throws DataBaseException
 		 */ 
-		public function insert( $sql, $table, $pk="id" ) {
+		public static function insert( $sql, $table, $pk="id" ) {
 			try {
 				$result = DB::getInstance()->query( $sql );
 				if( $result == 1 ) {
@@ -128,7 +141,7 @@
 		 * it will return true, else false.
 		 * @throws DataBaseException
 		 */
-		public function update( $sql ) {
+		public static function update( $sql ) {
 			try {
 				if( DB::getInstance()->query( DB::clean( $sql ) )== 1 ) { return true; } else { return false; }
 			} catch( ErrorException $ee ) {

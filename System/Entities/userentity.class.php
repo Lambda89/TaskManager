@@ -20,6 +20,8 @@
 		private $login = null;    // if we want it to be different from the email, probably will want that, screen name?
 		private $passwd = null;   // Should be hashed. md5 is a good choice probably.
 		private $created = null;  // When this entity was created.
+		private $state = "NOUSER";   // ENUM[ACTIVE,INACTIVE,BANNED,REGISTERED].If this user is to be considered in use or deleted. May also symbolise a state of banned.
+		private $loggedIn = false;
 
 		/* == Basic functions == */
 		/**
@@ -53,17 +55,43 @@
 		/* == Utility == */
 		
 		/**
-			This 
+			This will either set this userentity to one user found in the database
+			or leave the user at default values.
 		**/
 		public function login( $login, $password ) {
-
+			$this->setLogin( $login );
+			$this->setPassword( $passHash );
+			
 		}
 
 		public function hashPassword( $password ) {
-			if( $password == null || $password == "" ) { throw new IllegalArgumentException( "No password provided.", 4400, null ); }
+			if( $password == null || $password == "" ) {
+				throw new IllegalArgumentException( "No password provided.", 2501, null );
+			}
 		}
 
 		public function persist( $op=null ) {
+			
+		}
+
+		public function retrieve() {
+			$user = new UserEntity(); // makes sure we return a new object in case the retrieval goes wrong.
+			
+			$sqlRet = "SELECT * FROM `userentity` WHERE `login`='".$this->login."' AND `password`='".$this->passwd."';";
+			$result = DB::query( $sqlRet );
+			if( $result->num_rows != 1 ) {
+				if( $result->num_rows == 0 ) {
+					return $user;
+				} else {
+					throw new IllegalArgumentException( "Retrieved several users. Illegal state!", 2510, null, $this->login );
+				}
+			}
+			
+			$userData = DB::processQueryResult( $result );
+
+			foreach( $key )
+			
+			return $user;
 		}
 	}
 
