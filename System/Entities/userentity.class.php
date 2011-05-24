@@ -71,7 +71,15 @@
 		}
 
 		public function persist( $op=null ) {
-			
+			if( $op == "DEL" && $id != null ) {
+				$delSQL = "DELETE * FROM `user_entity` WHERE `id` = ". $this->login ." AND ". $this->passwd ." LIMIT 1;";
+				return DB::delete( $delSQL );
+			} else if( $this->id != null ) {
+				$sqlUPD = "UPDATE `user_entity` SET `login` = ". $this->login." AND `passwd` = ". $this->passwd ." WHERE id = ". $this->login .";";
+				return DB::update( );
+			} else {
+				$sql
+			}
 		}
 
 		public function retrieve() {
@@ -89,7 +97,7 @@
 			
 			$userData = DB::processQueryResult( $result );
 
-			foreach( $key )
+			foreach( $key ) {}
 			
 			return $user;
 		}
