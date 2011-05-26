@@ -17,7 +17,7 @@
 	**/
 
 	require_once( 'application_config.php' );
-	require_once( $BASE_EXP ."error_handler.php" );
+	require_once( BASE_EXP ."error_handler.php" );
 
 	/**
 		Required to be here to autoload classes as they are encountered.
@@ -41,20 +41,25 @@
 	**/
 	function __autoload( $class ) {
 		$class = strtolower( $class );
+		
 		$toLoad = null;
 
 		if( stristr( $class, "exception" ) == "exception" ) {
-			$toLoad = $BASE_DIR ."System/Exceptions/". $class .".class.php";
+			$toLoad = BASE_DIR ."System/Exceptions/". $class .".class.php";
 		}
 		else if( stristr( $class, "entity" ) == "entity" ) {
-			$toLoad = $BASE_DIR ."System/Entities/". $class .".class.php";
+			$toLoad = BASE_DIR ."System/Entities/". $class .".class.php";
 		}
-		else if( $class, "interface" == "interface" ) {
-			$toLoad = $BASE_DIR ."System/Interfaces/". $class .".class.php";
+		else if( stristr($class, "interface") == "interface" ) {
+			$toLoad = BASE_DIR ."System/Interfaces/". $class .".class.php";
 		}
 		/** Not optimal, Utilities should be located under Business for general access */
 		else if( stristr( $class, "utility") == "utility") {
-			$toLoad = $BASE_DIR ."System/Utilities/". $class .".class.php";
+			$toLoad = BASE_DIR ."System/Utilities/". $class .".class.php";
+		}
+		else if( stristr( $class, "logic" ) == "logic" ) {
+			$toLoad = BASE_DIR ."Business/Logic/". $class .".class.php";
+			echo 'Dir is: '. $toLoad ."</br>";
 		}
 		else {
 			try {
@@ -62,13 +67,13 @@
 
 				switch( $part[ 0 ] )  {
 					case "test" :
-						$toLoad = $BASE_DIR ."Tests/". $class .".class.php";
+						$toLoad = BASE_DIR ."Tests/". $class .".class.php";
 						break;
 					case "view" :
-						$toLoad = $BASE_DIR ."Views/". $class .".class.php";
+						$toLoad = BASE_DIR ."Views/". $class .".class.php";
 						break;
 					default:
-						$toLoad = $BASE_DIR ."Business/CommonClasses/". $class .".class.php";
+						$toLoad = BASE_DIR ."Business/CommonClasses/". $class .".class.php";
 						break;
 				}
 			} catch( Exception $e ) {
@@ -79,9 +84,10 @@
 		// Actual file loading happens here.
 		try {
 			require_once( $toLoad );
-		} catch( Exception $e ) {
+		} catch( ErrorException $e ) {
+			echo $e ."</br>";
 			$mess = "Did not find the class file requested, '". $class ."'. Please check naming and paths before retrying.";
-			throw new FileNotFoundException( $mess, 1, $e, $toLoad );
+			throw new FileNotFoundException( $mess, 1000, $e, $toLoad );
 		}
 	}
 

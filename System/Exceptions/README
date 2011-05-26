@@ -37,4 +37,20 @@ Codes :
 
 	6*** - General Exception
 
+	7*** - Validation / Data Error
+	7001 - Null Error
+	7200 - Numeric errors
+		7201 - Not a numeric value
+		7202 - Not a positive number
+		7203 - Not a negative number
+		7204 - Not a integer
+		7205 - Not a float
+		
+		7210 - Not a positive number
+		7211 - Not a negative number
+		
+	7300 - String errors
+		7310 - Not a valid email.
+	7400 - Object errors
+
 ( *** means any number in this case, the code is always between 1000 and 9999 )

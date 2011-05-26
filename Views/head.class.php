@@ -7,7 +7,7 @@
 	Comment: Uses functions to make individual parts of the head first,
 			 then concatenates it all together and echoes it.
 	
-	@package Entities
+	@package Views
 	uses:
 		n/a - n/a
 		  

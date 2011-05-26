@@ -50,7 +50,7 @@
 
 		public function setPassword( $password ) { $this->passwd = $this->hashPassword( $password ); }
 
-
+		public function setId( $id ) { }
 
 		/* == Utility == */
 		
@@ -82,6 +82,9 @@
 			}
 		}
 
+		/**
+			
+		*/
 		public function retrieve() {
 			$user = new UserEntity(); // makes sure we return a new object in case the retrieval goes wrong.
 			
@@ -97,10 +100,18 @@
 			
 			$userData = DB::processQueryResult( $result );
 
-			foreach( $key ) {}
-			
+			foreach( $userData as $key => $value ) {
+				switch ( $key ) {
+					case "id"        : $user->setId( $value ); break;
+					case "login"     : $user->setLogin( $value ); break;
+					case "passwd"    : $user->setPasswd( $value ); break;
+					case "created"   : $user->setCreated( $value ); break;
+					case "state"     : $user->setState( $value ); break;
+					case "loggedIn"  : $user->setLoggedIn( $value ); break;
+					default : break;
+				}
+			}
 			return $user;
 		}
 	}
-
 ?>

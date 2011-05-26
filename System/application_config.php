@@ -20,15 +20,15 @@
 			n/a - n/a
 	**/
 
-// SYSTEM PROPERTIES
-date_default_timezone_set( "Europe/Stockholm" ); // Brutal override of the php.ini file.
+	// SYSTEM PROPERTIES
+	date_default_timezone_set( "Europe/Stockholm" ); // Brutal override of the php.ini file.
 
-// FILE STRUCTURE
-$BASE_DIR = "/srv/www/htdocs/TaskManager/";
+	// FILE STRUCTURE
+	define( "BASE_DIR",  "/srv/www/htdocs/TaskManager/" );
 
-$BASE_EXP = $BASE_DIR ."System/Exceptions/";
-$BASE_ENT = $BASE_DIR ."System/Entities/";
-$BASE_COMMONS = $BASE_DIR ."Business/CommonClasses/";
-$BASE_LOGIC = $BASE_DIR ."Business/Logic/";
+	define( "BASE_EXP", "/srv/www/htdocs/TaskManager/System/Exceptions/" );
+	define( "BASE_ENT", BASE_DIR ."System/Entities/" );
+	define( "BASE_COMMONS", BASE_DIR ."Business/CommonClasses/" );
+	define( "BASE_LOGIC", BASE_DIR ."Business/Logic/" );
 
 ?>
