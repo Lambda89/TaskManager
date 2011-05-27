@@ -20,7 +20,7 @@
 		private $login = null;    // if we want it to be different from the email, probably will want that, screen name?
 		private $passwd = null;   // Should be hashed. md5 is a good choice probably.
 		private $created = null;  // When this entity was created.
-		private $state = "NOUSER";   // ENUM[ACTIVE,INACTIVE,BANNED,REGISTERED].If this user is to be considered in use or deleted. May also symbolise a state of banned.
+		private $status = "NOUSER";   // ENUM[ACTIVE,INACTIVE,BANNED,REGISTERED,NOUSER].If this user is to be considered in use or deleted. May also symbolise a state of banned.
 		private $loggedIn = false;
 
 		/* == Basic functions == */
@@ -50,8 +50,21 @@
 
 		public function setPassword( $password ) { $this->passwd = $this->hashPassword( $password ); }
 
-		public function setId( $id ) { }
-
+		public function setStatus( $value ) {
+			if( !is_null( $value ) ) {
+				switch( $value ){
+					case "ACTIVE" : $this->status = $value; break;
+					case "INACTIVE" : $this->status = $value; break;
+					case "BANNED" : $this->status = $value; $this->loggedIn = false; break;
+					case "REGISTERED" : $this->status = $value; break;
+					case "NOUSER" : $this->status = $value; break;
+					default: throw new ValidationException( "Not a proper ENUM value for user_entity:status", 7400, null, $value );
+				}
+			}
+		}
+		public function getStatus() { return $this->status; }
+		
+		
 		/* == Utility == */
 		
 		/**
@@ -60,22 +73,29 @@
 		**/
 		public function login( $login, $password ) {
 			$this->setLogin( $login );
-			$this->setPassword( $passHash );
+			$this->setPassword( $password );
 			
 		}
 
+		/**
+			Returns a SHA1 hash of the password passed into it.
+		*/
 		public function hashPassword( $password ) {
 			if( $password == null || $password == "" ) {
 				throw new IllegalArgumentException( "No password provided.", 2501, null );
 			}
+			return sha1( $password );
 		}
 
+		/**
+			A simple persists 
+		*/
 		public function persist( $op=null ) {
 			if( $op == "DEL" && $id != null ) {
-				$delSQL = "DELETE * FROM `user_entity` WHERE `id` = ". $this->login ." AND ". $this->passwd ." LIMIT 1;";
-				return DB::delete( $delSQL );
+				$inactiveSQL = "UPDATE `user_entity` SET `status`='INACTIVE' WHERE `login`='".$this->login."' AND `passwd`='".$this->passwd."' LIMIT 1;";
+				return DB::delete( $inactiveSQL );
 			} else if( $this->id != null ) {
-				$sqlUPD = "UPDATE `user_entity` SET `login` = ". $this->login." AND `passwd` = ". $this->passwd ." WHERE id = ". $this->login .";";
+				$sqlUPD = "UPDATE `user_entity` SET `email`='".$this->email."', `login`='". $this->login."', `passwd`='". $this->passwd ."', `status`='".$this->status."' WHERE `login`='". $this->login ."';";
 				return DB::update( );
 			} else {
 				$sql
@@ -106,7 +126,7 @@
 					case "login"     : $user->setLogin( $value ); break;
 					case "passwd"    : $user->setPasswd( $value ); break;
 					case "created"   : $user->setCreated( $value ); break;
-					case "state"     : $user->setState( $value ); break;
+					case "status"     : $user->setStatus( $value ); break;
 					case "loggedIn"  : $user->setLoggedIn( $value ); break;
 					default : break;
 				}

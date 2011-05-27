@@ -50,7 +50,8 @@ Codes :
 		7211 - Not a negative number
 		
 	7300 - String errors
-		7310 - Not a valid email.
+		7310 - Not a valid email
+		7320 - Not a valid enum value
 	7400 - Object errors
 
 ( *** means any number in this case, the code is always between 1000 and 9999 )

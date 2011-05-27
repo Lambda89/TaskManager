@@ -22,6 +22,7 @@
 		
 		/* - UTILITY : PUBLIC - */
 		public function validateEmailLogic() {
+			echo '<h3> Running tests on email addresses </h3>';
 			$valid =  "werner.johansson@good-omens.se";
 
 			$invalids = array(
