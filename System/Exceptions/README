@@ -19,7 +19,7 @@ Codes :
 	1110 - Failed SQL request in some way.
 
 	1200 - File error of some sort
-	1201 - Failed to locate a file.
+	1201 - Failed to locate a file
 
 	2*** - Entity exceptions
 	2100 - Basic failure
@@ -53,5 +53,7 @@ Codes :
 		7310 - Not a valid email
 		7320 - Not a valid enum value
 	7400 - Object errors
+	7500 - Logical errors
+		7510 - Not a boolean value
 
 ( *** means any number in this case, the code is always between 1000 and 9999 )

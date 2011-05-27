@@ -28,7 +28,7 @@
 			Basic constructor, will however do a login if provided to a login and password.
 		**/
 		public function __construct( $login=null, $password=null ) {
-			if( $login != null & $password != null ) {
+			if( !is_null( $login ) && !is_null( $password ) ) {
 				$this->login( $login, $password );
 			}
 		}
@@ -45,7 +45,7 @@
 		/**
 			Returns/Sets the login/screen name
 		**/
-		public function getLogin() { return $this->login(); }
+		public function getLogin() { return $this->login; }
 		public function setLogin( $userName ) { $this->login = $userName; }
 
 		public function setPassword( $password ) { $this->passwd = $this->hashPassword( $password ); }
@@ -63,6 +63,17 @@
 			}
 		}
 		public function getStatus() { return $this->status; }
+
+		public function setCreated( $value ) { $this->created = $value; }
+		public function getCreated() { return $this->created; }
+
+		public function setLoggedIn( $value ) {
+			if( is_bool( $value ) ) {
+				$this->loggedIn = value;
+			}
+			throw new ValidationException( "Indata for user:loggedIn was not a bool", 7510, null, $value );
+		}
+		public function isLoggedIn() { return $this->loggedIn; }
 		
 		
 		/* == Utility == */
@@ -72,9 +83,13 @@
 			or leave the user at default values.
 		**/
 		public function login( $login, $password ) {
-			$this->setLogin( $login );
-			$this->setPassword( $password );
-			
+			if( !is_null( $login ) && !is_null( $password ) ) {
+				$this->setLogin( $login );
+				$this->setPassword( $password );
+				$this->retrieve();
+			} else {
+				throw new IllegalArgumentException( "Login and/or Password was null.", 7000, null, $login." ".$password );
+			}
 		}
 
 		/**
@@ -98,23 +113,23 @@
 				$sqlUPD = "UPDATE `user_entity` SET `email`='".$this->email."', `login`='". $this->login."', `passwd`='". $this->passwd ."', `status`='".$this->status."' WHERE `login`='". $this->login ."';";
 				return DB::update( );
 			} else {
-				$sql
+				$sqlIns = "INSERT INTO `user_entity` ()";
 			}
 		}
 
 		/**
-			
+			A rather simple retrieval from the DB returning a new object if this class.
+			It presumes that login and password as set as part of the contract to retrieve
+			the data from the DB.
 		*/
 		public function retrieve() {
-			$user = new UserEntity(); // makes sure we return a new object in case the retrieval goes wrong.
-			
 			$sqlRet = "SELECT * FROM `userentity` WHERE `login`='".$this->login."' AND `password`='".$this->passwd."';";
 			$result = DB::query( $sqlRet );
 			if( $result->num_rows != 1 ) {
 				if( $result->num_rows == 0 ) {
-					return $user;
+					return;
 				} else {
-					throw new IllegalArgumentException( "Retrieved several users. Illegal state!", 2510, null, $this->login );
+					throw new IllegalArgumentException( "Retrieved several users. Illegal state in DB!", 2510, null, $this->login );
 				}
 			}
 			
@@ -122,16 +137,14 @@
 
 			foreach( $userData as $key => $value ) {
 				switch ( $key ) {
-					case "id"        : $user->setId( $value ); break;
-					case "login"     : $user->setLogin( $value ); break;
-					case "passwd"    : $user->setPasswd( $value ); break;
-					case "created"   : $user->setCreated( $value ); break;
-					case "status"     : $user->setStatus( $value ); break;
-					case "loggedIn"  : $user->setLoggedIn( $value ); break;
+					case "login"     : $this->setLogin( $value ); break;
+					case "passwd"    : $this->passwd = $value; break; // We don't want to rehash the password once more.
+					case "created"   : $this->setCreated( $value ); break;
+					case "status"    : $this->setStatus( $value ); break;
+					case "loggedIn"  : $this->setLoggedIn( $value ); break;
 					default : break;
 				}
 			}
-			return $user;
 		}
 	}
 ?>
