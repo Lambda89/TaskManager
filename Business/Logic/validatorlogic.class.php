@@ -82,13 +82,42 @@
 		}
 
 		/**
-			Checks if the indata is a proper email via regexp checking.
-		*/
+		 * Checks if the indata is a proper email via regexp checking.
+		 */
 		public static function isValidEmail( $value ) {
 			if( eregi( "^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$", $value ) ) {
 				return true;
 			}
 			throw new ValidationException( "Email was not found valid with the follow regexp: ^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$", 7310, null, $value );
+		}
+
+		/**
+		 * A more friendly version of is_bool( $value ) which takes in an indata and
+		 * tries as friendly as possible verify if this bool can be verified to either
+		 * True or False. Failing that it throws a ValidationException.
+		 *
+		 * Any number passed in will be converted into a boolean true for values != 0
+		 * and False if they match 0.
+		 */
+		public static function isBool( $value ) {
+			if( is_bool( $value ) ) {
+				return $value;
+			} else if( is_numeric( $value ) ) {
+				if( $value == 0 ) {
+					return false;
+				} else {
+					return true;
+				}
+			} else if( is_string( $value ) ) {
+				$trueBools = array( "yes", "y", "true" );
+				$falseBools = array( "no", "n", "false" );
+				if( in_array( strtolower($value), $trueBools ) ) {
+					return true;
+				} else if( in_array( strtolower( $valie), $falseBools ) ) {
+					return false;
+				}
+			}
+			throw new ValidationException( "Indata was not something that was parseable as a bool.", 7511, null, $indata );
 		}
 		
 		

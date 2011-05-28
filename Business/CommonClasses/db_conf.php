@@ -11,9 +11,10 @@
 	* 	n/a - n/a
 	**/
 	// DATABASE - Use Local
-	$DB_TYPE = "MYSQLI";
-	$DB_SERVER = "localhost";
-	$DB_USER = "root";
-	$DB_PASSWD = "gabba4";
+	define( "DB_TYPE", "MYSQLI" );
+	define( "DB_SERVER", "localhost" );
+	define( "DB_USER", "root" );
+	define( "DB_PASSWD", "gabba4" );
+	define( "DB_NAME", "TaskManager" );
 
 ?>
