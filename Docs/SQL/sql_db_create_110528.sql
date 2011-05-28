@@ -33,7 +33,7 @@ CREATE  TABLE IF NOT EXISTS `TaskManager`.`user_entity` (
   `email` VARCHAR(100) CHARACTER SET 'utf8' COLLATE 'utf8_bin' NOT NULL COMMENT 'The preferred way to contact this user. Also works as a login.' ,
   `login` VARCHAR(25) CHARACTER SET 'utf8' COLLATE 'utf8_bin' NOT NULL COMMENT 'The name the user are shown them selves or others.' ,
   `passwd` TEXT CHARACTER SET 'utf8' COLLATE 'utf8_bin' NOT NULL COMMENT 'Hashed with either SHA1 or MD5 encoding.' ,
-  `createdAt` TIMESTAMP NOT NULL COMMENT 'When this entity was created. It\'s part since we might want to track this as well as use it for various salts.' ,
+  `createdAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'When this entity was created. It\'s part since we might want to track this as well as use it for various salts.' ,
   `status` ENUM('ACTIVE','INACTIVE','BANNED','REGISTERED','NOUSER') NOT NULL ,
   `loggedIn` TINYINT(1)  NULL ,
   PRIMARY KEY (`email`) )
