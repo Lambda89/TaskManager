@@ -26,7 +26,7 @@
 		/* - GET/SET - */
 		/* - UTILITY : PUBLIC - */
 		public static function runAllTests() {
-			echo "<h3> Running tests for User Entities </h3>"
+			echo "<h3> Running tests for User Entities </h3>";
 			$tests = new test_users();
 			$tests->test_create_empty_user_entity();
 		}

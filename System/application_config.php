@@ -24,9 +24,9 @@
 	date_default_timezone_set( "Europe/Stockholm" ); // Brutal override of the php.ini file.
 
 	// FILE STRUCTURE
-	define( "BASE_DIR",  "/srv/www/htdocs/TaskManager/" );
+	define( "BASE_DIR",  "/Users/pbrewitz/Sites/TaskManager/" );
 
-	define( "BASE_EXP", "/srv/www/htdocs/TaskManager/System/Exceptions/" );
+	define( "BASE_EXP", "/Users/pbrewitz/Sites/TaskManager/System/Exceptions/" );
 	define( "BASE_ENT", BASE_DIR ."System/Entities/" );
 	define( "BASE_COMMONS", BASE_DIR ."Business/CommonClasses/" );
 	define( "BASE_LOGIC", BASE_DIR ."Business/Logic/" );
