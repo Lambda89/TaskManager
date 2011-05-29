@@ -1,2 +1,3 @@
 *.spike.*
 *.php~
+System/application_config.php
