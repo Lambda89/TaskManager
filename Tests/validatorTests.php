@@ -54,7 +54,7 @@
 				}
 			}
 		}
-	}
+	} // EoF Class
 
 		/* - UTILITY : PRIVATE - */
 

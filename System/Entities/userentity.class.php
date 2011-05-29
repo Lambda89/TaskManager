@@ -33,6 +33,14 @@
 			}
 		}
 
+		public function __toString() {
+			echo "Email: ". $this->email ."<br />";
+			echo "Login: ". $this->login ."<br />";
+			echo "Passwd: ". $this->passwd ."<br />";
+			echo "Created: ". $this->created ."<br />";
+			echo "Status :". $this->status ."<br />";
+			echo "LoggedIn: ". $this->loggedIn ."<br />";
+		}
 
 		/* == Get/Set == */
 		
@@ -68,10 +76,11 @@
 		public function getCreated() { return $this->created; }
 
 		public function setLoggedIn( $value ) {
-			if( is_bool( $value ) ) {
-				$this->loggedIn = value;
+			if( ValidatorLogic::isBool( $value) ) {
+				$this->loggedIn = ValidatorLogic::isBool( $value );
+			} else {
+				throw new ValidationException( "Indata for user:loggedIn was not a bool", 7510, null, $value );
 			}
-			throw new ValidationException( "Indata for user:loggedIn was not a bool", 7510, null, $value );
 		}
 		public function isLoggedIn() { return $this->loggedIn; }
 		
@@ -87,6 +96,8 @@
 				$this->setLogin( $login );
 				$this->setPassword( $password );
 				$this->retrieve();
+				$this->setLoggedIn( true );
+				$this->persist();
 			} else {
 				throw new IllegalArgumentException( "Login and/or Password was null.", 7000, null, $login." ".$password );
 			}
@@ -106,14 +117,20 @@
 			A simple persists 
 		*/
 		public function persist( $op=null ) {
-			if( $op == "DEL" && $id != null ) {
+			if( $op == "DEL" && $this->login != null ) {
 				$inactiveSQL = "UPDATE `user_entity` SET `status`='INACTIVE' WHERE `login`='".$this->login."' AND `passwd`='".$this->passwd."' LIMIT 1;";
 				return DB::delete( $inactiveSQL );
-			} else if( $this->id != null ) {
-				$sqlUPD = "UPDATE `user_entity` SET `email`='".$this->email."', `login`='". $this->login."', `passwd`='". $this->passwd ."', `status`='".$this->status."' WHERE `login`='". $this->login ."';";
-				return DB::update( );
+			} else if( !is_null( $this->created ) ) {
+				$sqlUPD = "UPDATE `user_entity` SET `email`='".$this->email."', `login`='". $this->login."', `passwd`='". $this->passwd ."', `status`='".$this->status."', `loggedIn`=".$this->loggedIn." WHERE `email`='". $this->email ."' LIMIT 1;";
+				return DB::update( $sqlUPD );
 			} else {
-				$sqlIns = "INSERT INTO `user_entity` ()";
+				$sqlIns = "INSERT INTO `user_entity` (`email`,`login`,`passwd`,`createdAt`,`status`,`loggedIn`) VALUES ('".$this->email."','".$this->login."','".$this->passwd."',CURRENT_TIMESTAMP,'".$this->status."', ".$this->loggedIn." );";
+				$returned = DB::insert( $sqlIns, "user_entity", "email" );
+				if( $returned === $this->email ) {
+					return true;
+				} else {
+					throw new IllegalArgumentException( "Key returned does not match internal object key.", 2400, null, $returned );
+				}
 			}
 		}
 
@@ -123,27 +140,34 @@
 			the data from the DB.
 		*/
 		public function retrieve() {
-			$sqlRet = "SELECT * FROM `userentity` WHERE `login`='".$this->login."' AND `password`='".$this->passwd."';";
+			$sqlRet = "SELECT * FROM user_entity WHERE login='".$this->login."' AND passwd='".$this->passwd."';";
 			$result = DB::query( $sqlRet );
-			if( $result->num_rows != 1 ) {
-				if( $result->num_rows == 0 ) {
-					return;
-				} else {
-					throw new IllegalArgumentException( "Retrieved several users. Illegal state in DB!", 2510, null, $this->login );
+			try {
+				if( $result->num_rows != 1 ) {
+					if( $result->num_rows == 0 ) {
+						return;
+					} else {
+						throw new IllegalArgumentException( "Retrieved several users. Illegal state in DB!", 2510, null, $this->login );
+					}
 				}
-			}
-			
-			$userData = DB::processQueryResult( $result );
+				
+				$rows = DB::processQueryResult( $result );
 
-			foreach( $userData as $key => $value ) {
-				switch ( $key ) {
-					case "login"     : $this->setLogin( $value ); break;
-					case "passwd"    : $this->passwd = $value; break; // We don't want to rehash the password once more.
-					case "created"   : $this->setCreated( $value ); break;
-					case "status"    : $this->setStatus( $value ); break;
-					case "loggedIn"  : $this->setLoggedIn( $value ); break;
-					default : break;
+				foreach( $rows as $userData ) {
+					foreach( $userData as $key => $value ) {
+						switch ( $key ) {
+							case "email"     : $this->setEmail( $value ); break;
+							case "login"     : $this->setLogin( $value ); break;
+							case "passwd"    : $this->passwd = $value; break; // We don't want to rehash the password once more.
+							case "createdAt" : $this->setCreated( $value ); break;
+							case "status"    : $this->setStatus( $value ); break;
+							case "loggedIn"  : $this->setLoggedIn( $value ); break;
+							default : break;
+						}
+					}
 				}
+			} catch( ErrorException $ee ) {
+				echo $result->info;
 			}
 		}
 	}

@@ -24,6 +24,7 @@ Codes :
 	2*** - Entity exceptions
 	2100 - Basic failure
 	2200 - Failed to Insert data
+		2201 - Key returned was not the expected key.
 	2300 - Failed to Update data
 	2400 - Failed to Delete data
 	2500 - Failed to Select data
@@ -55,5 +56,6 @@ Codes :
 	7400 - Object errors
 	7500 - Logical errors
 		7510 - Not a boolean value
+		7511 - Not parseable as boolean value
 
 ( *** means any number in this case, the code is always between 1000 and 9999 )
