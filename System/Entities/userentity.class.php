@@ -93,7 +93,11 @@
 		**/
 		public function login( $login, $password ) {
 			if( !is_null( $login ) && !is_null( $password ) ) {
-				$this->setLogin( $login );
+				if( ValidatorLogic::isValidEmail( $login ) ) {
+					$this->email = $login;
+				} else {
+					$this->setLogin( $login );
+				}
 				$this->setPassword( $password );
 				$this->retrieve();
 				$this->setLoggedIn( true );
@@ -140,7 +144,11 @@
 			the data from the DB.
 		*/
 		public function retrieve() {
-			$sqlRet = "SELECT * FROM user_entity WHERE login='".$this->login."' AND passwd='".$this->passwd."';";
+			if( $this->email != null ) {
+				$sqlRet = "SELECT * FROM user_entity WHERE email='".$this->email."' AND passwd='".$this->passwd."';";
+			} else {
+				$sqlRet = "SELECT * FROM user_entity WHERE login='".$this->login."' AND passwd='".$this->passwd."';";
+			}
 			$result = DB::query( $sqlRet );
 			try {
 				if( $result->num_rows != 1 ) {

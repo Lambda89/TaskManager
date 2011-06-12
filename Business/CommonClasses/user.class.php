@@ -20,7 +20,7 @@
 		/* == Variables == */
 		
 		private UserEnity $user = null;
-		private $contactData = null;
+		private $contactData = array();
 
 		/* == Standard methods == */
 		
