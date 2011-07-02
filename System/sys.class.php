@@ -17,7 +17,7 @@
 	**/
 
 	require_once( 'app_config.php' );
-	require_once( BASE_EXP ."error_handler.php" );
+	require_once( BASE_EXCEP ."error_handler.php" );
 
 	/**
 		Required to be here to autoload classes as they are encountered.

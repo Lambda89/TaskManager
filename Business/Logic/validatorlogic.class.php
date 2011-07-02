@@ -87,8 +87,9 @@
 		public static function isValidEmail( $value ) {
 			if( eregi( "^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$", $value ) ) {
 				return true;
+			} else {
+				return false;
 			}
-			throw new ValidationException( "Email was not found valid with the follow regexp: ^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$", 7310, null, $value );
 		}
 
 		/**

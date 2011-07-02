@@ -18,8 +18,8 @@
 	class User {
 
 		/* == Variables == */
-		
-		private UserEnity $user = null;
+
+		private $user = null;
 		private $contactData = array();
 
 		/* == Standard methods == */
@@ -27,8 +27,11 @@
 		/**
 			Basic Constructor, requires
 		**/
-		public function __construct( UserEntity $userEntity=null ) {
+		public function __construct( UserEntity $userEntity=null, $password=null ) {
 			$this->user = $userEntity;
+			if( $this->user != null && $password != null ) {
+				$this->reconstruct( $password );
+			}
 		}
 
 		/* == Get/Set internal variables == */
@@ -41,6 +44,43 @@
 			// will need validation
 		}
 		public function addContactData( ContactDataEntity $conData ) {
+			
+		}
+		
+
+		/* == Peristence methods == */
+
+		/**
+		 * Logins in the user if it exists or create a new user if there was
+		 * none in the DB to match.
+		 */
+		public function login( $login, $password ) {
+			$this->setUserEntity( new UserEntity( $login, $password ) );
+			$this->reconstruct( $password );
+		}
+
+		/**
+		 * Persists all the entities related to this  
+		 */
+		public function logout() {
+			if( $this->user instanceof UserEntity ) {
+				$this->user->logout();
+			}
+			
+			foreach( $this->contactData as $cData ) {
+				if( $cData instanceof ContactDataEntity ) {
+					$cData->persist();
+				}
+			}
+		}
+
+		/**
+		 * It presumes that there is a proper user entity to work with
+		 * on this user and from there it will pull in other entities
+		 * to fill out the User.
+		 */
+		public function reconstruct() {
+			$this->setContactData( ContactDataEntity::retrieveUserContactData( $this->getUserEntity() ) );
 			
 		}
 		

@@ -55,13 +55,38 @@
 		/* == INTERFACE == */
 
 		/**
+		 * A statit method that pulls up all the contactData available for
+		 * this user and returns them as an array of ContactDataEntities.
+		 */
+		public static function retrieveUserContactData( UserEntity $user ) {
+			$userID = $user->getEmail();
+			$sqlSEL = "SELECT * FROM `user_contact_data_entity` WHERE `fk_user_email` = ". $userID .";";
+			$reply = DB::query( $sqlSEL );
+			$reply = DB::processQueryResult( $reply );
+			$toReturn = array();
+			
+			foreach( $reply as $row ) {
+				$tmp = new ContactDataEntity( $user );
+				foreach( $row as $key => $value ) {
+					if( $key == "id"       ) { $tmp->setId( $value );       }
+					if( $key == "protocol" ) { $tmp->setProtocol( $value ); }
+					if( $key == "userName" ) { $tmp->setUserName( $value ); }
+					if( $key == "comment"  ) { $tmp->setId( $value );       }
+				}
+				$toReturn[] = $tmp;
+			}
+
+			return $toReturn;
+		}
+
+		/**
 			Forces this entity to retrieve the database.
 			This will return true if a successful retrieval was done, else false.
 			@throws IllegalArgumentException
 		**/
 		public function retrieve( $id ) {
 			if( is_integer( $id ) ) {
-				$sqlSEL = "SELECT * FROM `user_contact_data` WHERE `id`='$id';";
+				$sqlSEL = "SELECT * FROM `user_contact_data_entity` WHERE `id`='$id';";
 				try {
 					$reply = DB::retrieve( $sqlSEL );
 					if( $reply != null ) {
@@ -93,7 +118,7 @@
 			if( $op != null ) {
 				if( $op == "DEL" ) {
 					if( $id != -1 ) {
-						$sqlDEL = "DELETE * FROM `user_contact_data` WHERE `id` = $this->id AND `protocol_user_name` = '$this->userName' LIMIT 1;";
+						$sqlDEL = "DELETE * FROM `user_contact_data_entity` WHERE `id` = $this->id AND `protocol_user_name` = '$this->userName' LIMIT 1;";
 						return DB::delete( $sqlDEL );
 					}
 				} else {
@@ -101,7 +126,7 @@
 				}
 			} else {
 				if( $this->id != -1 ) {
-					$sqlINS = "INSERT INTO `user_contact_data` (`id`,`userID`,`protocol`,`userName`,`comment`) VALUES ( null, '$this->userID','$this->protocol','$this->userName','$this->comment')";
+					$sqlINS = "INSERT INTO `user_contact_data_entity` (`id`,`userID`,`protocol`,`fk_user_email`,`comment`) VALUES ( null, '". $this->user->getEmail() ."','$this->protocol','$this->userName','$this->comment')";
 					$this->id = DB::insert( $sqlINS );
 
 					if( $this->id != 0 && $this->id != -1 ) {
@@ -110,7 +135,7 @@
 						return false;
 					}
 				} else {
-					$sqlUPD = "UPDATE `user_contact_data` SET `protocol`='$this->protocol', `userName`='$this->userName', `comment` = '$this->comment' WHERE `id`=$this->id";
+					$sqlUPD = "UPDATE `user_contact_data_entity` SET `protocol`='$this->protocol', `fk_user_email`='$this->userName', `comment` = '$this->comment' WHERE `id`=$this->id";
 					return DB::update( $sqlUPD );
 				}
 			}

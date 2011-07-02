@@ -36,20 +36,17 @@
 
 			
 			echo 'Valid Email pass test: ';
-			try {
-				ValidatorLogic::isValidEmail( $valid );
+			if( ValidatorLogic::isValidEmail( $valid ) ) {
 				echo $this->passed;
-			} catch( ValidationException $ve ) {
+			} else {
 				echo $this->failed;
-				echo $ve;
 			}
 
 			foreach( $invalids as $invalid ) {
 				echo 'InValid Email test('. $invalid .'): ';
-				try {
-					ValidatorLogic::isValidEmail( $invalid );
+				if( ValidatorLogic::isValidEmail( $invalid ) ) {
 					echo $this->failed;
-				} catch( ValidationException $ve ) {
+				} else {
 					echo $this->passed;
 				}
 			}

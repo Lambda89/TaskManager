@@ -108,6 +108,14 @@
 		}
 
 		/**
+		 * A basic logout function.
+		 */
+		public function logout() {
+			$this->setLoggedIn( false );;
+			$this->persist();
+		}
+		
+		/**
 			Returns a SHA1 hash of the password passed into it.
 		*/
 		public function hashPassword( $password ) {

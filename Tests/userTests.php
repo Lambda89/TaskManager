@@ -101,6 +101,7 @@
 				} else { $this->failed ." - Failed to insert user into DB with success message. <br />"; }
 			} catch( DataBaseException $dbe ) {
 				echo $this->failed ." - Failed to insert entity as expected. <br />";
+				echo $dbe;
 			}
 
 			// Clean up

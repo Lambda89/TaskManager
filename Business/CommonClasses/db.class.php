@@ -16,7 +16,7 @@
 	 *
 	 * @package Commons
 	 * uses:
-	 * 	configuration.php - fixed values for database notation.
+	 * 		/System/server_config.php - fixed values for database notation.
 	 **/
 
 	class DB {
@@ -30,7 +30,6 @@
 		static function getInstance() {
 			if( DB::$DB == null ) {
 				try {
-					require_once( 'db_conf.php' ); // Keeps track of configuration
 					DB::$DB = new mysqli(
 						DB_SERVER,
 						DB_USER,
