@@ -21,8 +21,8 @@
 		private $passwd = null;   // Should be hashed. md5 is a good choice probably.
 		private $created = null;  // When this entity was created.
 		private $status = "NOUSER";   // ENUM[ACTIVE,INACTIVE,BANNED,REGISTERED,NOUSER].If this user is to be considered in use or deleted. May also symbolise a state of banned.
-		private $loggedIn = false;
-
+		private $loggedIn = 0;
+		
 		/* == Basic functions == */
 		/**
 			Basic constructor, will however do a login if provided to a login and password.
@@ -34,12 +34,14 @@
 		}
 
 		public function __toString() {
-			echo "Email: ". $this->email ."<br />";
-			echo "Login: ". $this->login ."<br />";
-			echo "Passwd: ". $this->passwd ."<br />";
-			echo "Created: ". $this->created ."<br />";
-			echo "Status :". $this->status ."<br />";
-			echo "LoggedIn: ". $this->loggedIn ."<br />";
+			echo "<div style='border:groove 2p #555;padding:5px;color:#222;background:#DDD;width:500px;max-width:500px;'>";
+			echo "<span style='width:80px;max-width:80px;text-align:right;'> Email: </span>". $this->email ."<br />";
+			echo "<span style='width:80px;max-width:80px;text-align:right;'>Login: </span>". $this->login ."<br />";
+			echo "<span style='width:80px;max-width:80px;text-align:right;'>Passwd: </span>". $this->passwd ."<br />";
+			echo "<span style='width:80px;max-width:80px;text-align:right;'>Created: </span>". $this->created ."<br />";
+			echo "<span style='width:80px;max-width:80px;text-align:right;'>Status: </span>". $this->status ."<br />";
+			echo "<span style='width:80px;max-width:80px;text-align:right;'>LoggedIn: </span>". $this->loggedIn ."<br />";
+			echo "</div>";
 		}
 
 		/* == Get/Set == */
@@ -54,7 +56,10 @@
 			Returns/Sets the login/screen name
 		**/
 		public function getLogin() { return $this->login; }
-		public function setLogin( $userName ) { $this->login = $userName; }
+		public function setLogin( $userName ) {
+			ValidatorLogic::isNotNull( $userName );
+			$this->login = $userName;
+		}
 
 		public function setPassword( $password ) { $this->passwd = $this->hashPassword( $password ); }
 
@@ -62,10 +67,10 @@
 			if( !is_null( $value ) ) {
 				switch( $value ){
 					case "ACTIVE" : $this->status = $value; break;
-					case "INACTIVE" : $this->status = $value; break;
-					case "BANNED" : $this->status = $value; $this->loggedIn = false; break;
+					case "INACTIVE" : $this->status = $value; $this->loggedIn = 0; break;
+					case "BANNED" : $this->status = $value; $this->loggedIn = 0; break;
 					case "REGISTERED" : $this->status = $value; break;
-					case "NOUSER" : $this->status = $value; break;
+					case "NOUSER" : $this->status = $value; $this->loggedIn = 0; break;
 					default: throw new ValidationException( "Not a proper ENUM value for user_entity:status", 7400, null, $value );
 				}
 			}
@@ -93,17 +98,29 @@
 		**/
 		public function login( $login, $password ) {
 			if( !is_null( $login ) && !is_null( $password ) ) {
-				if( ValidatorLogic::isValidEmail( $login ) ) {
+				try {
+					ValidatorLogic::isValidEmail( $login );
 					$this->email = $login;
-				} else {
+				} catch( ValidationException $ve ) {
 					$this->setLogin( $login );
 				}
+				
 				$this->setPassword( $password );
 				$this->retrieve();
-				$this->setLoggedIn( true );
-				$this->persist();
+				
+				try {
+					$this->isCorrect();
+					$this->setLoggedIn( true );
+					$this->persist();
+				} catch( ValidationException $ve ) {
+					if( $ve->getcode() == 7310 ) {
+						
+					} else {
+						throw new IllegalArgumentException( "User was not in a legal state", 7001, $ve );
+					}
+				}
 			} else {
-				throw new IllegalArgumentException( "Login and/or Password was null.", 7000, null, $login." ".$password );
+				throw new IllegalArgumentException( "Login and/or Password was null.", 7001, null, $login." : ".$password );
 			}
 		}
 
@@ -136,6 +153,7 @@
 				$sqlUPD = "UPDATE `user_entity` SET `email`='".$this->email."', `login`='". $this->login."', `passwd`='". $this->passwd ."', `status`='".$this->status."', `loggedIn`=".$this->loggedIn." WHERE `email`='". $this->email ."' LIMIT 1;";
 				return DB::update( $sqlUPD );
 			} else {
+				$this->isCorrect();
 				$sqlIns = "INSERT INTO `user_entity` (`email`,`login`,`passwd`,`createdAt`,`status`,`loggedIn`) VALUES ('".$this->email."','".$this->login."','".$this->passwd."',CURRENT_TIMESTAMP,'".$this->status."', ".$this->loggedIn." );";
 				$returned = DB::insert( $sqlIns, "user_entity", "email" );
 				if( $returned === $this->email ) {
@@ -158,6 +176,7 @@
 				$sqlRet = "SELECT * FROM user_entity WHERE login='".$this->login."' AND passwd='".$this->passwd."';";
 			}
 			$result = DB::query( $sqlRet );
+			
 			try {
 				if( $result->num_rows != 1 ) {
 					if( $result->num_rows == 0 ) {
@@ -185,6 +204,29 @@
 			} catch( ErrorException $ee ) {
 				echo $result->info;
 			}
+		}
+
+		/**
+		 * This function is private since it should only be used internally to ensure that
+		 * the caller of it uses it to validate it for DB use. Should be used before a
+		 * persist request or after a retrieval that the user entity has a correct state
+		 * of a user.
+		 */
+		private function isCorrect() {
+			if( $this->status == "NOUSER" ) {
+				echo "<div>Status error: ". $this->status ."</div>";
+				throw new ValidationException( "User has an illegal status: ". $this->status .". User is disallowed to login.", 7401 );
+			}
+			if( $this->passwd == null || $this->passwd == "" ) {
+				echo "<div>Password error: ". $this->passwd ."</div>";
+				throw new ValidationException( "User has no password, clear violation. User is disallowed to login.", 7401 );
+			}
+			if( $this->login == null || $this->login == "" ) {
+				echo "<div>No login: ". $this->login ."</div>";
+				throw new ValidationException( "User has no login, clear violation.  User is disallowed to login.", 7401 );
+			}
+
+			ValidatorLogic::isValidEmail( $this->email );
 		}
 	}
 ?>

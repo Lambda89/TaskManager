@@ -53,7 +53,10 @@ Codes :
 	7300 - String errors
 		7310 - Not a valid email
 		7320 - Not a valid enum value
+		
 	7400 - Object errors
+		7401 - Entity in inconsistent state
+		
 	7500 - Logical errors
 		7510 - Not a boolean value
 		7511 - Not parseable as boolean value
