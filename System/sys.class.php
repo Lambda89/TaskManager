@@ -197,7 +197,7 @@
 					$this->user = $_SESSION[ 'user' ];
 				} else {
 					$this->user = new User();
-					$this->user->setUserName( "Unknown User" );
+					$this->user->getUserEntity()->setLogin( "Unknown User" );
 				}
 			} else {}
 		}

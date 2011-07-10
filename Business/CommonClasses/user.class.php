@@ -31,6 +31,11 @@
 			$this->user = $userEntity;
 			if( $this->user != null && $password != null ) {
 				$this->reconstruct( $password );
+			} else {
+				$this->user = new UserEntity();
+				try {
+					$this->user->setPassword( $password );
+				} catch( Exception $e ) {}
 			}
 		}
 
