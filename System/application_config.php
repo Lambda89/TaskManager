@@ -20,5 +20,4 @@
 	define( "BASE_ENTITY", BASE_DIR."System/Entities/" );
 	define( "BASE_INTER",  BASE_DIR."System/Interfaces/" );
 
-	
 ?>
