@@ -87,9 +87,8 @@
 		public static function isValidEmail( $value ) {
 			if( eregi( "^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$", $value ) ) {
 				return true;
-			} else {
-				return false;
 			}
+			throw new ValidationException( "The value provided did not match a proper email adress.", 7310 );
 		}
 
 		/**

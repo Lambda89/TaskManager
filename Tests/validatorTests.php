@@ -43,11 +43,19 @@
 			}
 
 			foreach( $invalids as $invalid ) {
-				echo 'InValid Email test('. $invalid .'): ';
-				if( ValidatorLogic::isValidEmail( $invalid ) ) {
-					echo $this->failed;
-				} else {
-					echo $this->passed;
+				echo 'InValid Email test( '. $invalid .' ): ';
+				try {
+					if( ValidatorLogic::isValidEmail( $invalid ) ) {
+						echo $this->failed;
+					} else {
+						echo $this->passed;
+					}
+				} catch( ValidationException $ve ) {
+					if( $ve->getCode() ==  7310 ) {
+						echo $this->passed;
+					} else {
+						echo $this->passed ." - Massive error: ". $ve;
+					}
 				}
 			}
 		}

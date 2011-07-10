@@ -137,8 +137,6 @@
 					}
 					
 				} else {
-					echo "<br />Result: ". $result ."<br />";
-					echo "type: ". gettype( $result ) ."<br />";
 					throw new DataBaseException( "Failed to insert the statement.", 2200, null, $sql );
 				}
 			} catch( ErrorException $ee ) {
