@@ -110,6 +110,8 @@
 				$table = DB::clean( $table );
 				$pk = DB::clean( $pk );
 				$result = DB::getInstance()->query( $sql );
+				var_dump($result);
+				die();
 				if( $result == 1 ) {
 					try {
 						$id = $result->insert_id;

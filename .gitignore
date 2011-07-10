@@ -1,3 +1,5 @@
 *.spike.*
 *.php~
 System/app_config.php
+server_config.php
+server_config.php~
