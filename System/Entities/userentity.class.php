@@ -93,15 +93,25 @@
 		**/
 		public function login( $login, $password ) {
 			if( !is_null( $login ) && !is_null( $password ) ) {
-				if( ValidatorLogic::isValidEmail( $login ) ) {
+				try {
+					ValidatorLogic::isValidEmail( $login );
 					$this->email = $login;
-				} else {
+				} catch( ValidationException $ve ) {
 					$this->setLogin( $login );
 				}
 				$this->setPassword( $password );
 				$this->retrieve();
-				$this->setLoggedIn( true );
-				$this->persist();
+				try {
+					$this->isCorrect();
+					$this->setLoggedIn( true );
+					$this->persist();
+				} catch( ValidationException $ve ) {
+					if( $ve->getcode() == 7310 ) {
+						
+					} else {
+						throw new IllegalArgumentException( "User was not legal in a legal state", 7 );
+					}
+				}
 			} else {
 				throw new IllegalArgumentException( "Login and/or Password was null.", 7000, null, $login." ".$password );
 			}
@@ -185,6 +195,27 @@
 			} catch( ErrorException $ee ) {
 				echo $result->info;
 			}
+		}
+
+		/**
+		 * This function is private since it should only be used internally to ensure that
+		 * the caller of it uses it to validate it for DB use. Should be used before a
+		 * persist request or after a retrieval that the user entity has a correct state
+		 * of a user.
+		 */
+		private function isCorrect() {
+			if( $this->status == "NOUSER" ) {
+				throw new ValidationException( "User has an illegal status: ". $this->status .". User is disallowed to login.", 7000 );
+			}
+			if( $this->passwd == null || $this->passwd == "" ) {
+				throw new ValidationException( "User has no password, clear violation. User is disallowed to login.", 7000 );
+			}
+			if( $this->login == null || $this->login == "" ) {
+				throw new ValidationException( "User has no login, clear violation.  User is disallowed to login.", 7000 );
+			}
+
+			// Has to be last as this may return true or false;
+			ValidatorLogic::validateEmail( $this->email );
 		}
 	}
 ?>
