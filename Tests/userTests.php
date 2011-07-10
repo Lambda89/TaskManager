@@ -153,7 +153,6 @@
 
 
 			try {
-				echo $user->__toString();
 				if( $user->persist() ) {
 				} else { $this->failed ." - Failed to insert user into DB with success message. <br />"; }
 			} catch( DataBaseException $dbe ) {

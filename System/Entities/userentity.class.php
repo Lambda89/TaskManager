@@ -34,14 +34,15 @@
 		}
 
 		public function __toString() {
-			echo "<div style='border:groove 2p #555;padding:5px;color:#222;background:#DDD;width:500px;max-width:500px;'>";
-			echo "<span style='width:80px;max-width:80px;text-align:right;'> Email: </span>". $this->email ."<br />";
-			echo "<span style='width:80px;max-width:80px;text-align:right;'>Login: </span>". $this->login ."<br />";
-			echo "<span style='width:80px;max-width:80px;text-align:right;'>Passwd: </span>". $this->passwd ."<br />";
-			echo "<span style='width:80px;max-width:80px;text-align:right;'>Created: </span>". $this->created ."<br />";
-			echo "<span style='width:80px;max-width:80px;text-align:right;'>Status: </span>". $this->status ."<br />";
-			echo "<span style='width:80px;max-width:80px;text-align:right;'>LoggedIn: </span>". $this->loggedIn ."<br />";
-			echo "</div>";
+			return
+					"	<div style='border:groove 2p #555;padding:5px;color:#222;background:#DDD;width:500px;max-width:500px;'>
+						<span style='width:80px;max-width:80px;text-align:right;'> Email: </span>". $this->email ."<br />
+						<span style='width:80px;max-width:80px;text-align:right;'>Login: </span>". $this->login ."<br />
+						<span style='width:80px;max-width:80px;text-align:right;'>Passwd: </span>". $this->passwd ."<br />
+						<span style='width:80px;max-width:80px;text-align:right;'>Created: </span>". $this->created ."<br />
+						<span style='width:80px;max-width:80px;text-align:right;'>Status: </span>". $this->status ."<br />
+						<span style='width:80px;max-width:80px;text-align:right;'>LoggedIn: </span>". $this->loggedIn ."<br />
+						</div>";
 		}
 
 		/* == Get/Set == */
