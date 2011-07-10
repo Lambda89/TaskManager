@@ -125,7 +125,10 @@
 
 
 		public function getUser() { return $this->user; }
-		public function setUser( User $user ) { $this->user = $user; }
+		public function setUser( User $user ) { 
+			$this->user = $user;
+			$_SESSION[ 'user' ] = $user;
+		}
 
 		/* - UTILITY : PUBLIC - */
 
@@ -142,10 +145,10 @@
 		public function activate() {
 			try {
 				session_start();
+				$this->sessionActive = TRUE;
 
 				$this->prepSession();
 
-				$this->sessionActive = TRUE;
 			} catch( ErrorException $ee ) {
 				// No action taken here as we are only out to determine session start
 				// And user validity

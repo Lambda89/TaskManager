@@ -100,13 +100,16 @@
 		 * and False if they match 0.
 		 */
 		public static function isBool( $value ) {
-			if( is_bool( $value ) ) {
-				return $value;
-			} else if( is_numeric( $value ) ) {
-				if( $value == 0 ) {
-					return false;
-				} else {
+			try {
+				if( is_bool( $value ) ) {
 					return true;
+				}
+			} catch( Exception $e ) {}
+			if( is_numeric( $value ) ) {
+				if( $value == 1 OR $value == 0 ) {
+					return true;
+				} else {
+					return false;
 				}
 			} else if( is_string( $value ) ) {
 				$trueBools = array( "yes", "y", "true" );

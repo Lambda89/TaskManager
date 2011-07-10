@@ -82,8 +82,8 @@
 		public function getCreated() { return $this->created; }
 
 		public function setLoggedIn( $value ) {
-			if( ValidatorLogic::isBool( $value) ) {
-				$this->loggedIn = ValidatorLogic::isBool( $value );
+			if( ValidatorLogic::isBool( $value ) ) {
+				$this->loggedIn = $value;
 			} else {
 				throw new ValidationException( "Indata for user:loggedIn was not a bool", 7510, null, $value );
 			}
@@ -129,7 +129,7 @@
 		 * A basic logout function.
 		 */
 		public function logout() {
-			$this->setLoggedIn( false );;
+			$this->setLoggedIn( 0 );;
 			$this->persist();
 		}
 		
@@ -215,15 +215,12 @@
 		 */
 		private function isCorrect() {
 			if( $this->status == "NOUSER" ) {
-				echo "<div>Status error: ". $this->status ."</div>";
 				throw new ValidationException( "User has an illegal status: ". $this->status .". User is disallowed to login.", 7401 );
 			}
 			if( $this->passwd == null || $this->passwd == "" ) {
-				echo "<div>Password error: ". $this->passwd ."</div>";
 				throw new ValidationException( "User has no password, clear violation. User is disallowed to login.", 7401 );
 			}
 			if( $this->login == null || $this->login == "" ) {
-				echo "<div>No login: ". $this->login ."</div>";
 				throw new ValidationException( "User has no login, clear violation.  User is disallowed to login.", 7401 );
 			}
 

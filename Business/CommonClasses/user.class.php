@@ -98,5 +98,9 @@
 			}
 			return $email;
 		}
+		
+		public function __toString() {
+			return $this->user->__toString();
+		}
 	}
 ?>

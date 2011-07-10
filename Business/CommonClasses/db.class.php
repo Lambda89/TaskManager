@@ -94,8 +94,10 @@
 		public static function processQueryResult( $result ) {
 			$returnArray = array();
 			$counter = 0;
-			while( $row = $result->fetch_assoc() ) {
-				$returnArray[] = $row;
+			if( is_object( $result ) ) {
+				while( $row = $result->fetch_assoc() ) {
+					$returnArray[] = $row;
+				}
 			}
 			return $returnArray;
 		}
@@ -172,4 +174,3 @@
 
 	}
 ?>
-		

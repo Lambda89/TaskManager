@@ -32,7 +32,8 @@
 			$this->user = $user;
 			try {
 				if( $id != -1 ) {
-					retrieve( $id );
+					$this->setID( $id );
+					$this->retrieve();
 				}
 			} catch( Exception $e ) {
 				// This probably will want to fail silently, not sure if it should here though.
@@ -84,7 +85,7 @@
 			This will return true if a successful retrieval was done, else false.
 			@throws IllegalArgumentException
 		**/
-		public function retrieve( $id ) {
+		public function retrieve() {
 			if( is_integer( $id ) ) {
 				$sqlSEL = "SELECT * FROM `user_contact_data_entity` WHERE `id`='$id';";
 				try {
